@@ -1,63 +1,90 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
 #include <calc.h>
 
-int main(int argc, char **argv){
-
-  /*************************************************************
-   write code for the main process that will establish
-   the communication channel between cleint and server using
-   pipes
-  *************************************************************/
-	
-  pid_t pid;
-
-  // TODO:
-  int fd1[2]; // Used to store two ends of first pipe
-  int fd2[2]; // Used to store two ends of second pipe
-  int loopCount;
- for (loopCount = 0; loopCount < 10; loopCount++)
-  {
-	if (pipe(fd1) == -1)
-    {
-        fprintf(stderr, "Pipe Failed");
-        return 1;
-    }
-
-    if (pipe(fd2) == -1)
-    {
-        fprintf(stderr, "Pipe Failed");
-        return 1;
-    }
-	
-  pid = fork();
-
-  if(pid < 0){
-    perror("Fork failed\n");
-    return 1;
-  }
-
-  if(pid == 0){
-
-    // TODO:
-	close(fd1[1]); // Close writing end of first pipe
-	 close(fd2[0]);
-	 server(fd1[0],fd2[1]);
-    //call to server here: server(int readfd, int writefd);
-    exit(0);
-  }
-
-  // TODO:
-	close(fd1[0]); // Close reading end of first pipe
-	close(fd2[1]); // Close writing end of second pipe
-	
-	client(fd2[0],fd1[1]);
-  //call to client here client(int readfd, int writefd);
-  } //End of For Loop
-  return 0;
-  
+// Utility function to check if a character is an operator
+int isOperator(char ch) {
+    return (ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '%');
 }
+
+// Utility function to get the precedence of an operator
+int getPrecedence(char op) {
+   //fprintf(stderr, "Operator is : %c\n",op);
+	 if (op == '%')
+		 return 1;
+	 else if (op == '/')
+		 return 2;
+	  else if (op == '*')
+		 return 3;
+	  else if (op == '+')
+		 return 4;
+	  else if (op == '-')
+		 return 5;
+	  else
+        return 0;  // Not an operator
+}
+
+// Utility function to perform the calculation based on operator
+double performOperation(double operand1, double operand2, char op) {
+    switch (op) {
+        case '+':
+            return operand1 + operand2;
+        case '-':
+            return operand1 - operand2;
+        case '*':
+            return operand1 * operand2;
+        case '/':
+            if (operand2 != 0) {
+                return operand1 / operand2;
+            } else {
+                fprintf(stderr, "Error: Division by zero\n");
+                exit(EXIT_FAILURE);
+            }
+        case '%':
+            if (operand2 != 0) {
+                return (int)operand1 % (int)operand2;
+            } else {
+                fprintf(stderr, "Error: Modulo by zero\n");
+                exit(EXIT_FAILURE);
+            }
+        default:
+            fprintf(stderr, "Error: Unknown operator %c\n", op);
+            exit(EXIT_FAILURE);
+    }
+}
+
+double calculate(char *expression) {
+    double operands[20];
+    char operators[20];
+    int operandIndex = 0;
+    int operatorIndex = 0;
+
+    char *token = strtok(expression, " ");
+    while (token != NULL) {
+        if (isOperator(token[0])) {
+            while (operatorIndex > 0 &&
+                   getPrecedence(operators[operatorIndex - 1]) >= getPrecedence(token[0])) {
+                double operand2 = operands[--operandIndex];
+                double operand1 = operands[--operandIndex];
+                char op = operators[--operatorIndex];
+                operands[operandIndex++] = performOperation(operand1, operand2, op);
+            }
+            operators[operatorIndex++] = token[0];
+        } else {
+            operands[operandIndex++] = atof(token);
+        }
+
+        token = strtok(NULL, " ");
+    }
+
+    while (operatorIndex > 0) {
+        double operand2 = operands[--operandIndex];
+        double operand1 = operands[--operandIndex];
+        char op = operators[--operatorIndex];
+        operands[operandIndex++] = performOperation(operand1, operand2, op);
+    }
+
+    return operands[0];
+}
+

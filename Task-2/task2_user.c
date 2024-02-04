@@ -1,45 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
 #include <unistd.h>
+#include <string.h>
 
-#define MAX_BUFF 500
-#define STDIN 0
-#define STDOUT 1
-#define STDERR  2
+#define MAX_LINE_LENGTH 500
 
-int main(int argc, char **argv){
+int main(int argc, char *argv[]) {
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <input_file> <output_file>\n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
 
-  /*************************************************************
-   Implement the user program that can be invoked by the
-   driver program to establish chat communication channel
-   bwtween two user.
+    FILE *input_file = fopen(argv[1], "r");
+    FILE *output_file = fopen(argv[2], "w");
 
-   please implement your program which take 4 arguments
-   as follows
+    if (input_file == NULL || output_file == NULL) {
+        perror("Error opening files");
+        exit(EXIT_FAILURE);
+    }
 
-   argv[1]: read handle of channel
-   argv[2]: write handle of channel
-   argv[3]: chat content
-   argv[4]: file to store other party message
+    char line[MAX_LINE_LENGTH];
 
-  *************************************************************/
+    // Read the first line to determine if this user is the initiator
+    fgets(line, sizeof(line), input_file);
+    if (strstr(line, "initiate") != NULL) {
+        // User is the initiator, start the chat
+        printf("Initiating the chat...\n");
 
-  if(argc < 5)
-  {
-    perror("Required 5 arguments\n");
-    exit(0);
-  }
+        // Read and write messages until "bye" or end of file is encountered
+        while (fgets(line, sizeof(line), input_file) != NULL && strstr(line, "bye") == NULL) {
+            printf("User: %s", line);
+            fprintf(output_file, "User (Reply): %s", line);
+        }
+    } else {
+        // User is not the initiator, wait for the initiator's message
+        printf("Waiting for the initiator's message...\n");
 
-  int readfd = atoi(argv[1]);   // read handle of channel
-  int writefd = atoi(argv[2]);  // write handle of channel
-  char *chat_file = argv[3];    // chat content file
-  char *store_file = argv[4];   // store file
-  FILE *content, *store;        // file stream to read your chat content and store other user's message
+        // Read and write messages until "bye" or end of file is encountered
+        while (fgets(line, sizeof(line), input_file) != NULL && strstr(line, "bye") == NULL) {
+            printf("User: %s", line);
+            fprintf(output_file, "User (Reply): %s", line);
+        }
+    }
 
-  // Start your implementation
+    // Close files
+    fclose(input_file);
+    fclose(output_file);
 
-  return 0;
+    printf("Chat communication completed.\n");
+
+    return 0;
 }

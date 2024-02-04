@@ -15,28 +15,52 @@ void client(int readfd, int writefd){
   char buf_calc_result[MAX_BUFF];
   size_t len;
 	
-	printf("Enter your input : ");
-    fgets(buf, sizeof(buf), stdin);
+	//printf("Enter your input : ");
+     //read the inout provided by user on STDIN
+	//if (fgets(buf, sizeof(buf), stdin) == NULL) {
+		if (read(STDIN_FILENO, buf, sizeof(buf)) <= 0) {
+            fprintf(stderr, "Error reading input\n");
+            exit(1);
+        }
   // implement client functionality
   // Remove the newline character at the end if present
+  //buf[strcspn(strlen(buf), "\n")] = '\0'; // Remove trailing newline
+		//printf("input %s\n: ",buf);
+		/*
             if (buf[strlen(buf) - 1] == '\n')
             {
                 buf[strlen(buf) - 1] = '\0';
             }
+			*/
+			
 	 // write pipe for client
             write(writefd, buf, strlen(buf) + 1);
-            close(writefd);
-	 // Wait for child to send a string
+            close(writefd); //Close the end
+	 // Wait for server to send a string
             wait(NULL);
+			/*
 			 // Check for termination
 			if (strcmp(buf, "END") == 0) {
 				exit(0);
 			}
+			*/
 	// Read string from child, print it and close
             // reading end.
-            read(readfd, buf_calc_result, sizeof(buf_calc_result));
-            printf("RESULT: %s\n", buf_calc_result);
-            close(readfd);
+           // read(readfd, buf_calc_result, sizeof(buf_calc_result));
+			 while (read(readfd, buf_calc_result, sizeof(buf_calc_result)) > 0) {
+				if (strcmp(buf_calc_result, "END") == 0) {
+						//printf("RESULT: %s\n", buf_calc_result);
+						exit(0);
+					}
+					else
+					{
+						printf("RESULT: %s\n", buf_calc_result);
+					}
+			}
+			close(readfd); //Close the read end
+			wait(NULL);
+			 // Check for termination	
+            
            // sleep(2);
-		wait(NULL);
+		
 }

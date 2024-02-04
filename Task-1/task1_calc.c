@@ -19,9 +19,10 @@ int main(int argc, char **argv){
   // TODO:
   int fd1[2]; // Used to store two ends of first pipe
   int fd2[2]; // Used to store two ends of second pipe
-  int loopCount;
- for (loopCount = 0; loopCount < 10; loopCount++)
-  {
+ // int loopCount;
+ //for (loopCount = 0; loopCount < 10; loopCount++)
+//while(1)
+  //{
 	if (pipe(fd1) == -1)
     {
         fprintf(stderr, "Pipe Failed");
@@ -57,7 +58,7 @@ int main(int argc, char **argv){
 	
 	client(fd2[0],fd1[1]);
   //call to client here client(int readfd, int writefd);
-  } //End of For Loop
+  //} //End of For Loop
   return 0;
   
 }

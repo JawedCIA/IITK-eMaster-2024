@@ -1,77 +1,133 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <string.h>
+#include <unistd.h>
 
-int main(int argc, char *argv[]) {
-    if (argc != 5) {
+
+// #define MAX_BUF 1024 //Constant for max buffer
+
+int main(int argc, char **argv)
+{
+   if (argc != 5) {  //check for arguments passed to driver
         fprintf(stderr, "Usage: %s <user1_content> <user1_store> <user2_content> <user2_store>\n", argv[0]);
-        exit(EXIT_FAILURE);
+        exit(-1);
     }
 
-    int pipe_user1_to_user2[2];
-    int pipe_user2_to_user1[2];
+//printf("In Main under driver\n");
+ const char *task2_user_binary_path = "Task-2/task2_user";
+ char *task2_user1_content = argv[1];
+ char *task2_user1_store = argv[2];
+ char *task2_user2_content = argv[3];
+ char *task2_user2_store = argv[4];
+ char *task2_user_binary_name="task2_user";
+//Creation of Pipes
+  int task2_user1_pipeFD[2];
+  int task2_user2_pipeFD[2];
+pid_t task2_user2_PID; //User 2 
+pid_t task2_user1_PID;// User 1
+   // Check if user binary file exists or not
+  // const char *file_path = "Task-2/task2_user";
+    if (access(task2_user_binary_path, F_OK) != 0) {
+        //printf("File exists at %s\n", file_path);
+        perror("ERROR: user binary File does not exist or cannot be accessed:");
+    } 
+	
 
-    // Create pipes
-    if (pipe(pipe_user1_to_user2) == -1 || pipe(pipe_user2_to_user1) == -1) {
-        perror("Pipe creation failed");
-        exit(EXIT_FAILURE);
+//First pipe
+  if (pipe(task2_user1_pipeFD)== -1)
+  {
+    perror("ERROR: Failed to create Pipe Error: ");
+  }
+
+  // Second pipe
+  if (pipe(task2_user2_pipeFD) == -1)
+  {
+    perror("ERROR: Failed to create Pipe: ");
+  }
+// endregion
+
+  // Fork again to create second user
+  task2_user1_PID = fork();
+  if (task2_user1_PID == -1)
+  {
+    perror("ERROR: Failed  to create child process_1:");
+  }
+
+  if (task2_user1_PID == 0) //User 1 child process
+  {
+
+    char str_readFD[10];
+    char str_writeFD[10];;
+    sprintf(str_readFD, "%d", task2_user1_pipeFD[0]); //convert this to string to pass on to user funtion
+     
+    sprintf(str_writeFD, "%d", task2_user2_pipeFD[1]); //convert this to string to pass on to user funtion
+   //printf("after 2nd sprintf under driver\n");
+
+    /*
+    else {
+        perror("File does not exist or cannot be accessed");
+    }
+    */
+    // Exec to the first process
+    //printf("Exec for 1st User");
+     execl(task2_user_binary_path, task2_user_binary_name,str_readFD, str_writeFD, task2_user1_content, task2_user1_store, NULL);
+    //execpl(user_program, "User 1 Process", readFDStr, writeFDStr, argv[1], argv[2], NULL);
+    perror("ERROR:Unable to execute:");
+  }
+  else
+  {
+
+    // First Parent Process - Create another fork
+    task2_user2_PID = fork();
+    if (task2_user2_PID == -1)
+    {
+      perror("Failed to create user 2 child process. Error");
     }
 
-    pid_t user1_pid, user2_pid;
+    if (task2_user2_PID == 0)
+    {
+      // Second Child Process.
 
-    // Fork for user-1
-    user1_pid = fork();
+      // Convert the pipeFDs to the string to pass them as an arguments to the executable
+      char task2_str_readFD2[10];
+      char task2_str_writeFD2[10];
 
-    if (user1_pid == -1) {
-        perror("Fork failed for user-1");
-        exit(EXIT_FAILURE);
+      sprintf(task2_str_readFD2, "%d", task2_user2_pipeFD[0]);//convert this to string to pass on to user funtion
+      sprintf(task2_str_writeFD2, "%d", task2_user1_pipeFD[1]);//convert this to string to pass on to user funtion
+
+      // Exec to the second process
+       execl(task2_user_binary_path, task2_user_binary_name,task2_str_readFD2, task2_str_writeFD2, task2_user2_content, task2_user2_store, NULL);
+      //execlp("./task2_user", "User 2 Process", readFDStr, writeFDStr, argv[3], argv[4], (char *)NULL);
+      perror("ERROR:Unable to execute:");
     }
-
-    if (user1_pid == 0) {
-        // Child process (user-1)
-        close(pipe_user1_to_user2[1]); // Close write end of pipe_user1_to_user2
-        close(pipe_user2_to_user1[0]); // Close read end of pipe_user2_to_user1
-
-        dup2(pipe_user1_to_user2[0], STDIN_FILENO);  // Redirect stdin to read from pipe_user1_to_user2
-        dup2(pipe_user2_to_user1[1], STDOUT_FILENO); // Redirect stdout to write to pipe_user2_to_user1
-
-        execlp("./task2_user", "./task2_user", argv[1], argv[2], NULL);
-        perror("User-1: exec failed");
-        exit(EXIT_FAILURE);
+    else
+    {
+      // Second Parent Process - Wait for all childs to finish execution
+      wait(NULL);
     }
+  }
+  
+ // waitpid(pid, NULL, 0);
+   // Now you can kill the child process if needed
+   // Check if the child process still exists
+     //This is not good programming but still i am using it :(
+//Sometime user still hanging so i am using this kill user pid as we are end.
+ //This issue occured during discusion with ARUN Sir, so i decided to use Kill here.
+ 
+        if (kill(task2_user1_PID, 0) == 0) {
+          // If the process exists, wait for 2 seconds
+            sleep(1);
+             kill(task2_user1_PID, SIGKILL); 
+        }
+        if (kill(task2_user2_PID, 0) == 0) {
+          // If the process exists, wait for 2 seconds
+            sleep(1);
+             kill(task2_user2_PID, SIGKILL); 
+        }
+  
 
-    // Fork for user-2
-    user2_pid = fork();
 
-    if (user2_pid == -1) {
-        perror("Fork failed for user-2");
-        exit(EXIT_FAILURE);
-    }
-
-    if (user2_pid == 0) {
-        // Child process (user-2)
-        close(pipe_user1_to_user2[0]); // Close read end of pipe_user1_to_user2
-        close(pipe_user2_to_user1[1]); // Close write end of pipe_user2_to_user1
-
-        dup2(pipe_user2_to_user1[0], STDIN_FILENO);  // Redirect stdin to read from pipe_user2_to_user1
-        dup2(pipe_user1_to_user2[1], STDOUT_FILENO); // Redirect stdout to write to pipe_user1_to_user2
-
-        execlp("./task2_user", "./task2_user", argv[3], argv[4], NULL);
-        perror("User-2: exec failed");
-        exit(EXIT_FAILURE);
-    }
-
-    // Close unnecessary pipe ends in the parent
-    close(pipe_user1_to_user2[0]);
-    close(pipe_user1_to_user2[1]);
-    close(pipe_user2_to_user1[0]);
-    close(pipe_user2_to_user1[1]);
-
-    // Wait for both user processes to finish
-    waitpid(user1_pid, NULL, 0);
-    waitpid(user2_pid, NULL, 0);
-
-    return 0;
+  return 0;
+}

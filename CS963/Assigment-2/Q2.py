@@ -4,7 +4,15 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from tabulate import tabulate
-
+#################################################
+"""
+Name: Mohammed Jawed
+Course: eMasters CyberSecurity, IIT-K, India 
+Module: CS963
+Purpose: HW-2, STEPS-2
+Date: 15Th feb 2024
+"""
+#################################################
 # Path to the CSV file
 csv_file = "HW2_part2.csv"
 

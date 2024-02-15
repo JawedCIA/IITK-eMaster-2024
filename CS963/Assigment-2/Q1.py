@@ -27,7 +27,13 @@ with open(csv_file, mode='r', newline='') as file:
             # Append values from the rest of the columns to the corresponding lists
             for i in range(1, 14):
                 y_values[i-1].append(float(row[i]))
+<<<<<<< HEAD
 
+=======
+# Print the y_values
+#for i, column_values in enumerate(y_values):
+ #   print(f"Column {i+2} values:", column_values)
+>>>>>>> 6c1fd91fa913b651f639b88c1f2e7696e532b625
 table_x_axis_values=[]
 for i,xaxis in enumerate(x_values):
     table_x_axis_values.append([f"Row {i+1}", x_values_original[i] , x_values[i]])

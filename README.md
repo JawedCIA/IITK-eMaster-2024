@@ -1,10 +1,9 @@
-Collection of Homework and Assignments completed during the IITK e-MASTER Degree Program 2024.
-I have added these materials here just for reference for future batches/cohorts. 
+This collection of homework and assignments was completed during the IITK eMASTERS Degree Program 2024. These materials are provided solely as a reference for future batches or cohorts.
 
-Please do not use them directly; otherwise, I will not be liable for any mistakes.
+Please do not use them directly. I will not be liable for any mistakes if you do so.
 
-Refer only for reference, nothing else.
+Use these materials for reference only.
 
 Thank you!
-
 Mohammed Jawed
+Jan,2024 Batch,IITK eMasters

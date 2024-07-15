@@ -1,6 +1,6 @@
 # Programming Assignment 1
 
-# Code under Repo has been sync with Solution of Mohammed, Jawed, eMasters Jan 2014 batch.
+# Code under Repo has been sync with Solution of Mohammed, Jawed, eMasters Jan 2024 batch.
 
 ## Directory Structure
 PA1 code base contains 5 directory, Makefile and other supported files required to complete the PA1 and described as follows:

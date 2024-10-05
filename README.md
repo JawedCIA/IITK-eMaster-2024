@@ -1,4 +1,4 @@
-# eMaster Cyber Security - Assignments
+# IITK eMasters Cyber Security - Assignments
 
 ## Overview
 This repository contains all the assignments I have completed as part of the **IITK eMASTERS Degree Program 2024** in **Cyber Security**. These materials cover a wide range of topics, including network security, cryptography, ethical hacking, and more.

@@ -15,9 +15,9 @@ To complete this program within **1 year** (starting from January 2024), I have 
 |  | CS964              | INTRODUCTION TO APPLICATION SECURITY, MOBILE SECURITY, AND CRITICAL INFRASTRUCTURE SECURITY        | gradescope     |       | ✅**COMPLETED**|
 |   | CS971              | COMPUTER NETWORKING II        | Included     |       | ✅**COMPLETED**|
 | 2024-25/FIRST (Jul-Sep) | CS974              | INTRODUCTION TO WEB SECURITY, NETWORKING SECURITY, AND DEFENSES         | gradescope      |       | ✅**COMPLETED**|
-|   |CS983              | EMBEDDED, CYBER PHYSICAL SYSTEMS AND IOT SECURITY         | Included - Group Project    | [Video Presentation](https://www.youtube.com/watch?v=tK_jPE3XKwE)       | ✅**COMPLETED**|
-|   | CS984              | INTRODUCTION TO HARDWARE SECURITY        | Included - Group Project     |       | ✅**COMPLETED**|
-| 2024-25/SECOND (Oct-Dec) | CS973     | Machine Learning for Cyber Security       | TBD   |      |🟡**INPROGRESS** |
+|   |CS983              | EMBEDDED, CYBER PHYSICAL SYSTEMS AND IOT SECURITY         | ~ Included(Group Project) ~ <br>Mohammed Jawed<br> Honey Das<br>Rajani Kumari<br>Saurav Patra    | [Video Presentation](https://www.youtube.com/watch?v=tK_jPE3XKwE)       | ✅**COMPLETED**|
+|   | CS984              | INTRODUCTION TO HARDWARE SECURITY        | ~ Included(Group Project ) ~ <br>Mohammed Jawed<br>Mohit Paritosh<br>Mohit Srivasatav<br>Nikita Shetty<br>Ajit Paranjape     |       | ✅**COMPLETED**|
+| 2024-25/SECOND (Oct-Dec) | CS973     | Machine Learning for Cyber Security       | ~ Group Project ~<br>Mohammed Jawed<br> Honey Das<br> Nikita Shetty<br>Ritika Chaurasia<br>S Sathya Kumar |      |🟡**INPROGRESS** |
 |   | CS981            |  Advanced Topics in Cryptography        | TBD    |      |🟡**INPROGRESS** |
 |   | CS987             | Advanced Critical Infrastructure Security        | TBD   |    |🟡**INPROGRESS** |
 

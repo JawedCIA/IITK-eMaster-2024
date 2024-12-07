@@ -19,8 +19,8 @@ To complete this program within **1 year** (starting from January 2024), I have 
 |   |CS983              | EMBEDDED, CYBER PHYSICAL SYSTEMS AND IOT SECURITY         | ~ Included(Group Project) ~ <br>Mohammed Jawed<br> Honey Das<br>Rajani Kumari<br>Saurav Patra    | [Video Presentation](https://www.youtube.com/watch?v=tK_jPE3XKwE)       | ✅**COMPLETED**|
 |   | CS984              | INTRODUCTION TO HARDWARE SECURITY        | ~ Included(Group Project ) ~ <br>Mohammed Jawed<br> Mohit Paritosh<br>Mohit Srivasatav<br>Nikita Shetty<br>Ajit Paranjape     |       | ✅**COMPLETED**|
 | 2024-25/SECOND (Oct-Dec) | CS973     | Machine Learning for Cyber Security       | ~ Group Name: ML Panchayat ~<br>Mohammed Jawed<br> Honey Das<br> Nikita Shetty<br>Ritika Chaurasia<br>S Sathya Kumar | [Git Repo](https://github.com/JawedCIA/CS973)     | ✅**COMPLETED** |
-|   | CS981            |  Advanced Topics in Cryptography        | Inlcuded    |  Thanks to Ritika for sharing handwritten note    | ✅**COMPLETED** |
-|   | CS987             | Advanced Critical Infrastructure Security        | Inlcuded   |    | ✅**COMPLETED** |
+|   | CS981            |  Advanced Topics in Cryptography        | Included    |  Thanks to Ritika for sharing handwritten note    | ✅**COMPLETED** |
+|   | CS987             | Advanced Critical Infrastructure Security        | Included   |    | ✅**COMPLETED** |
 
 ## eMasters Program Journey Insights
 ### Short Mantra:
